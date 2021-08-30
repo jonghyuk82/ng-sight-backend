@@ -22,12 +22,12 @@ namespace Advantage.API
             }
             if (!_ctx.Orders.Any())
             {
-                SeedOrders(nCustomers);
+                SeedOrders(nOrders);
                 _ctx.SaveChanges();
             }
             if (!_ctx.Servers.Any())
             {
-                SeedServers(nCustomers);
+                SeedServers();
                 _ctx.SaveChanges();
             }
         }
@@ -49,6 +49,16 @@ namespace Advantage.API
             foreach (var order in orders)
             {
                 _ctx.Orders.Add(order);
+            }
+        }
+
+        private void SeedServers()
+        {
+            List<Server> servers = BuildServerList();
+
+            foreach (var server in servers)
+            {
+                _ctx.Servers.Add(server);
             }
         }
 
@@ -82,19 +92,74 @@ namespace Advantage.API
 
             for (var i = 1; i <= nOrders; i++)
             {
-                var randCustomerId = rand.Next(_ctx.Customers.Count());
+                var randCustomerId = rand.Next(1, _ctx.Customers.Count());
                 var placed = Helpers.GetRandomOrderPlaced();
                 var completed = Helpers.GetRandomOrderCompleted(placed);
+                var customers = _ctx.Customers.ToList();
 
                 orders.Add(new Order
                 {
                     Id = i,
-                    Customer = _ctx.Customers.Where(c => c.Id == randCustomerId),
+                    Customer = customers.First(c => c.Id == randCustomerId),
                     Total = Helpers.GetRandomOrderTotal(),
                     Placed = placed,
                     Completed = completed
                 });
             }
+
+            return orders;
+        }
+
+        private List<Server> BuildServerList()
+        {
+            return new List<Server>()
+            {
+                new Server{
+                    Id = 1,
+                    name = "Dev-Web",
+                    IsOnline = true
+                },
+                new Server{
+                    Id = 2,
+                    name = "Dev-Mail",
+                    IsOnline = false
+                },
+                new Server{
+                    Id = 3,
+                    name = "Dev-Services",
+                    IsOnline = true
+                },
+                new Server{
+                    Id = 4,
+                    name = "QA-Web",
+                    IsOnline = true
+                },
+                new Server{
+                    Id = 5,
+                    name = "QA-Mail",
+                    IsOnline = false
+                },
+                new Server{
+                    Id = 6,
+                    name = "QA-Services",
+                    IsOnline = true
+                },
+                new Server{
+                    Id = 7,
+                    name = "Prod-Web",
+                    IsOnline = true
+                },
+                new Server{
+                    Id = 8,
+                    name = "Prod-Mail",
+                    IsOnline = true
+                },
+                new Server{
+                    Id = 9,
+                    name = "Prod-Services",
+                    IsOnline = true
+                },
+            };
         }
     }
 }
