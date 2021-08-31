@@ -37,10 +37,10 @@ namespace Advantage.API
             services.AddTransient<DataSeed>();
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Advantage.API", Version = "v1" });
-            });
+            // services.AddSwaggerGen(c =>
+            // {
+            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Advantage.API", Version = "v1" });
+            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,11 +49,15 @@ namespace Advantage.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Advantage.API v1"));
+                // app.UseSwagger();
+                // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Advantage.API v1"));
             }
 
             seed.SeedData(20, 1000);
+
+            // app.UseMvc(routes => routes.MapRoute(
+            //     "default", "api/{controller}/{action}/{id?}"
+            // ));
 
             app.UseHttpsRedirection();
 
@@ -63,7 +67,13 @@ namespace Advantage.API
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                //endpoints.MapControllers();
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "api/{controller}/{action}/{id?}"
+                    );
+
             });
         }
     }
