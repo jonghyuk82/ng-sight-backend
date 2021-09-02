@@ -60,11 +60,7 @@ namespace Advantage.API
                 // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Advantage.API v1"));
             }
 
-            seed.SeedData(20, 1000);
-
-            // app.UseMvc(routes => routes.MapRoute(
-            //     "default", "api/{controller}/{action}/{id?}"
-            // ));
+            seed.SeedData(20, 1000);            
 
             app.UseHttpsRedirection();
 
